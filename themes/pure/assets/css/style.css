@@ -9469,3 +9469,8 @@ body.okayNav-loaded {
   border-left: 3px solid #ffcc00;
   background-color: #fffae6;
 }
+
+::selection{
+  background-color: #0071e144;
+}
+ 

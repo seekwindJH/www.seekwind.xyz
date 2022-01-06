@@ -125,7 +125,13 @@ params:
       url: /avatar.jpg
     title: Hugo # 页面title
     favicon: /favicon.ico
-    board: <p>Someone is Watching you~</p> # 公告牌
+    board: '
+    欢迎来造😊
+      <ul>
+        <li>🐧QQ: 1207629368</li>
+        <li><a href="https://space.bilibili.com/343304977?spm_id_from=333.1007.0.0" target="_blank">📍Bilibili</a></li>
+      </ul> 
+    '
 
   # Share
   # weibo,qq,qzone,wechat,tencent,douban,diandian,facebook,twitter,google,linkedin
@@ -150,7 +156,7 @@ params:
       notify: seekwind@foxmail.com
       verify: # Verification code
       placeholder: 留下你的足迹~
-      avatar: retro # gravatar style
+      avatar: robohash # gravatar style
       meta: nick,mail,link # custom comment header
       pageSize: 10 # pagination size
       visitor: true # Article reading statistic https://valine.js.org/visitor.html

@@ -2,6 +2,10 @@
 title: "Binary Tree"
 date: 2021-12-22T13:00:24+08:00
 draft: false
+tags:
+    - tree
+categories:
+    - algorithms
 ---
 
 <!--more-->

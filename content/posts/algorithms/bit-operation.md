@@ -2,6 +2,8 @@
 title: "Bit Operation"
 date: 2021-12-25T10:19:42+08:00
 draft: false
+categories:
+    - algorithms
 ---
 
 位操作是计算机能够直接执行的底层操作，效率更高，在某些场合能够发生奇效。
