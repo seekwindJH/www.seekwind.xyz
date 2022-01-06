@@ -5,7 +5,7 @@ git push
 # Generate Hugo Static File
 hugo
 
-scp -r ./* root@seekwind.xyz:/root/App/www.seekwind.xyz/
+scp -r ./public/* root@seekwind.xyz:/data/nginx/html
 
 
 IF (TEST-PATH .\public\) {
