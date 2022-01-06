@@ -1,0 +1,205 @@
+theme: pure
+title: 追风の物語、
+copyright: SeekWind
+defaultContentLanguage: en  # en/zh/...
+footnoteReturnLinkContents: ↩
+hasCJKLanguage: true
+paginate: 7
+enableEmoji: true
+PygmentsCodeFences: false
+permalinks:
+  posts: /:year/:month/:filename/
+
+taxonomies:
+    category : categories
+    tag : tags
+    series : series
+outputFormats:          # use for search. recommend not to modify 
+  SearchIndex:
+    mediaType: "application/json"
+    baseName: "searchindex"
+    isPlainText: true
+    notAlternative: true
+
+outputs:
+    home: ["HTML","RSS","SearchIndex"]  # recommend not to modify
+# sitemap
+sitemap:
+  changefreq: monthly
+  filename: sitemap.xml
+  priority: 0.5
+
+menu:
+  main:
+    - identifier: home
+      name: Home
+      title: Home
+      url: /
+      weight: 1
+
+    - identifier: archives
+      name: Archives
+      title: Archives
+      url: /posts/
+      weight: 2
+
+
+    - identifier: categories
+      name: Categories
+      title: Categories
+      url: /categories/
+      weight: 4
+
+    - identifier: tags
+      name: Tags
+      title: Tags
+      url: /tags/
+      weight: 5
+
+    - identifier: about
+      name: About
+      title: About
+      url: /about/
+      weight: 6
+
+
+params:
+  highlight_color_style: https://cdn.staticfile.org/highlight.js/10.0.0/styles/an-old-hope.min.css
+  since: 2020
+  beian: 浙ICP备2021030817号
+  dateFormatToUse: "2006-01-02"
+  enablePostCopyright: true
+  copyright_link: http://www.seekwind.xyz
+  # the directory under content folder that you want to render
+  mainSections: ["posts"]
+  # Enable/Disable menu icons
+  # Icon Reference: http://blog.cofess.com/hexo-theme-pure/iconfont/demo_fontclass.html
+  enableMathJax: true #Enable mathjax support, to use mathematical notations
+  highlightjs:
+    langs: [] # refer to http://staticfile.org/, search highlight.js, already have highlight.min.js
+
+  tag_cloud:
+    min: 8
+    max: 20
+  # Allows you to specify an override stylesheet
+  # put custom.css in $hugo_root_dir/static/
+  # customCSS: css/custom.css
+
+  menuIcons:
+    enable: true  # 是否启用导航菜单图标
+    home: icon-home-fill
+    archives: icon-archives-fill
+    categories: icon-folder
+    tags: icon-tags
+    repository: icon-project
+    Books: icon-book-fill
+    links: icon-friendship
+    about: icon-cup-fill
+
+  # profile
+  profile:
+    enabled: true # Whether to show profile bar
+    avatar: /avatar.jpg
+    gravatar: # Gravatar email address, if you enable Gravatar, your avatar config will be overriden
+    author: SeekWind
+    author_title: 所追寻的风
+    author_description: 不要迷恋哥，哥只是个传说😂😋
+    location: Zhejiang, China
+    follow: https://github.com/seekwindJH
+    # Social Links
+    social:
+      links:
+        email: mailto:seekwind@foxmail.com
+        qq: http://wpa.qq.com/msgrd?v=3&uin=1207629368&site=qq&menu=yes
+        github: https://github.com/seekwindJH
+        gitee: https://gitee.com/seekwindJH
+        stackoverflow: https://stackoverflow.com/users/17058780/seekwind
+        rss: /index.xml
+      link_tooltip: false # enable the social link tooltip, options: true, false
+  # Site
+  site:
+    logo:
+      enabled: true
+      width: 40
+      height: 40
+      url: /avatar.jpg
+    title: Hugo # 页面title
+    favicon: /favicon.ico
+    board: <p>Someone is Watching you~</p> # 公告牌
+
+  # Share
+  # weibo,qq,qzone,wechat,tencent,douban,diandian,facebook,twitter,google,linkedin
+  share:
+    enable: true # 是否启用分享
+    sites: weibo,qq,wechat,facebook,twitter # PC端显示的分享图标
+    mobile_sites: weibo,qq,qzone # 移动端显示的分享图标
+
+  # Comment
+  comment:
+    type:  valine # type disqus/gitalk/valine 启用哪种评论系统
+    disqus: your_disqus_name # enter disqus shortname here
+    gitalk: # gitalk. https://gitalk.github.io/
+      owner: #必须. GitHub repository 所有者，可以是个人或者组织。
+      admin: #必须. GitHub repository 的所有者和合作者 (对这个 repository 有写权限的用户)。
+      repo:  #必须. GitHub repository.
+      ClientID: #必须. GitHub Application Client ID.
+      ClientSecret: #必须. GitHub Application Client Secret.
+    valine: # Valine. https://valine.js.org
+      appid: zPpSA95ybYQdeqtmjWu5rMBX-gzGzoHsz
+      appkey: 56rO2U5vdw24FoXjHhbbv6Nm
+      notify: seekwind@foxmail.com
+      verify: # Verification code
+      placeholder: 留下你的足迹~
+      avatar: retro # gravatar style
+      meta: nick,mail,link # custom comment header
+      pageSize: 10 # pagination size
+      visitor: true # Article reading statistic https://valine.js.org/visitor.html
+
+  # Donate
+  donate:
+    enable: false
+    # 微信打赏
+    wechatpay:
+      qrcode: donate/xxx.png
+      title: 微信支付
+    # 支付宝打赏
+    alipay:
+      qrcode: donate/xxx.png
+      title: 支付宝
+
+  # PV
+  pv:
+    busuanzi:
+      enable: false # 不蒜子统计
+    leancloud:
+      enable: false # leancloud统计
+      app_id: # leancloud <AppID>
+      app_key: # leancloud <AppKey>
+
+  # wordcount
+  postCount:
+    enable: true
+    wordcount: true # 文章字数统计
+    min2read: true # read time 阅读时长预计
+
+  # config
+  config:
+    skin: theme-blue # theme color default is white. other type [theme-black,theme-blue,theme-green,theme-purple]
+    layout: main-center # main-left main-center main-right
+    excerpt_link: Read More
+    toc: true
+
+  # Sidebar
+  sidebar: right
+
+  # Search
+  search:
+    enable: true # enable search. thanks for https://raw.githubusercontent.com/ppoffice/hexo-theme-icarus/master/source/js/insight.js
+
+  # Sidebar only the following widgets. you can remove any you don't like it.
+  widgets:
+    - board
+    - tag_cloud
+    - category
+    - tag
+    - recent_posts
