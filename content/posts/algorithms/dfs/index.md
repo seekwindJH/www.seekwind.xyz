@@ -418,3 +418,191 @@ class Solution {
     }
 }
 ```
+
+## 3. DFS在图论中的应用
+
+DFS产生于图论，而想要在小小的算法题中构建复杂的图论问题，显然是不太可能的。因此，我们只需要掌握一些简单的图论问题。
+
+这道题来自于[LeetCode207.课程表](https://leetcode-cn.com/problems/course-schedule/)。给定一个n*2的二维数组，第二列的课程是第一列课程的先修课程，换句话说，第二列课程是第一列课程的前驱。例如：
+```
+输入：numCourses = 2, prerequisites = [[1,0]]
+解释：要修读课程1，必须先修读课程0。
+```
+我们要计算的是，这种修读顺序是否可能。或者说，是否存在这种**拓扑排序**。在这个案例中，显然是可能的。因此返回true。然而，在下面这个案例中却是不可能的。
+
+```
+输入：numCourses = 2, prerequisites = [[1,0],[0,1]]
+输出：false
+解释：总共有 2 门课程。学习课程 1 之前，你需要先完成​课程 0 ；并且学习课程 0 之前，你还应先完成课程 1 。这是不可能的。
+```
+DFS解法：
+```java
+class Solution {
+    public boolean canFinish(int numCourses, int[][] prerequisites) {
+        int[] status = new int[numCourses];
+        List<List<Integer>> adjList = new ArrayList<>(numCourses);
+        for (int i = 0 ; i < numCourses ; i ++) {
+            adjList.add(new LinkedList<>());
+        }
+        for (int i = 0 ; i < prerequisites.length ; i ++) {
+            // 课程a是修课程b的先修，a->b
+            adjList.get(prerequisites[i][1]).add(prerequisites[i][0]);
+        }
+        for (int i = 0 ; i < numCourses ; i ++) {
+            if (status[i] == 0 && !dfs(i, status, adjList)) {
+                return false;
+            }
+        }
+        return true;
+    }
+    private boolean dfs(int index, int[] status, List<List<Integer>> adjList) {
+        status[index] = 1;
+        for (int adj : adjList.get(index)) {
+            if (status[adj] == 0 && !dfs(adj, status, adjList)) {
+                return false;
+            } else if (status[adj] == 1) {
+                // 成环，则false
+                return false;
+            }
+        }
+        status[index] = 2;
+        return true;
+    }
+}
+```
+
+BFS解法：
+```java
+class Solution {
+    public boolean canFinish(int numCourses, int[][] prerequisites) {
+        int[] inDegree = new int[numCourses];
+        List<List<Integer>> adjList = new ArrayList<>(numCourses);
+        for (int i = 0 ; i < numCourses ; i ++) {
+            adjList.add(new LinkedList<>());
+        }
+        for (int i = 0 ; i < prerequisites.length ; i ++) {
+            // 课程a是修课程b的先修，a->b
+            adjList.get(prerequisites[i][1]).add(prerequisites[i][0]);
+            // 计算课程的前驱数量
+            inDegree[prerequisites[i][0]] ++;
+        }
+        Deque<Integer> queue = new LinkedList<>();
+        for (int i = 0 ; i < numCourses ; i ++) {
+            if (inDegree[i] == 0) {
+                // 将没有前驱的课程入队
+                queue.add(i);
+            }
+        }
+        if (queue.isEmpty()) {
+            return false;
+        }
+        int visited = 0;
+        while (!queue.isEmpty()) {
+            ++ visited;
+            int cur = queue.poll();
+            for (int adj : adjList.get(cur)) {
+                // 相邻节点的入度减一
+                -- inDegree[adj];
+                if (inDegree[adj] == 0) {
+                    queue.add(adj);
+                }
+            }
+        }
+        // 如果有换路，则visited会大于numCourses
+        return visited == numCourses;
+    }
+}
+```
+## 4. DFS解决其他问题
+
+这道题来自[LeetCode394.字符串解码](https://leetcode-cn.com/problems/decode-string/)。看看下面几个测试用例就懂了：
+
+示例 1：
+
+```
+输入：s = "3[a]2[bc]"
+输出："aaabcbc"
+```
+
+示例 2：
+
+```
+输入：s = "ab3[a2[c]]"
+输出："abaccaccacc"
+```
+
+示例 3：
+
+```
+输入：s = "2[abc]3[cd]ef"
+输出："abcabccdcdcdef"
+```
+
+示例 4：
+
+```
+输入：s = "abc3[cd]xyz"
+输出："abccdcdcdxyz"
+```
+
+看上去这道题似乎是一个字符串问题，但本质上这却是一个关于树的问题。哪来的树呢？我们拿示例2为例，`s = "ab3[a2[c]]"`。其中：
+* `ab3[a2[c]]`是根节点
+* `3[a2[c]]`是一级子节点
+* `a`和`2[c]`是平行的二级子节点
+* `c`是三级子节点
+
+发现了没，它像是一种层层展开的关系。其中，每一层展开的逻辑是一样的，因此可以使用一个递归实现。是不是手痒要写算法了？
+
+```java
+class Solution {
+    public String decodeString(String s) {
+        return dfs(s, 0, s.length() - 1).toString();
+    }
+
+    private StringBuilder dfs(String s, int left, int right) {
+        // 保存结果的StringBuilder
+        StringBuilder res = new StringBuilder();
+        for (int i = left ; i <= right ; i ++) {
+            char c = s.charAt(i);
+            // 是字母，则直接追加到结果集
+            if ('a' <= c && c <= 'z') {
+                res.append(c);
+            } else {
+                // 一旦进人这个分支，则肯定是遇到了数字
+                // 用一个while循环将数字解析出来
+                // 这个数字就是后面中括号内的重复次数
+                int count = 0;
+                while ((c = s.charAt(i)) != '[') {
+                    count = count * 10 + (c - '0');
+                    i ++;
+                }
+
+                // 此时i指向左中括号
+                // 计算与之匹配的右中括号
+                int flag = 1;
+                int begin = i;
+                while (flag > 0) {
+                    i ++;
+                    if (s.charAt(i) == ']') {
+                        flag --;
+                    } else if (s.charAt(i) == '[') {
+                        flag ++;
+                    }
+                }
+
+                // 然后将中括号内的子串重复以上逻辑，这个过程是递归的
+                StringBuilder subStr = dfs(s, begin + 1, i - 1);
+                // 追加count次
+                while (count-- > 0) {
+                    res.append(subStr);
+                }
+            }
+        }
+        return res;
+    }
+}
+```
+
+## 5. 总结
+
+深度优先遍历是一个非常大的话题。笔者认为它并不是一种算法，而是一种程序的执行顺序，执行逻辑。使用DFS往往能解决许多遍历问题，尤其是排列组合。但始终要记住，它只是一种遍历而已。

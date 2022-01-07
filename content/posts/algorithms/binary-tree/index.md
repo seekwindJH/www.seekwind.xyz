@@ -680,6 +680,62 @@ class Solution {
 }
 ```
 
+来看一题前缀和。这道题来自于[LeetCode437.路径总和Ⅲ](https://leetcode-cn.com/problems/path-sum-iii/)。在一棵二叉树上，计算节点值之和为`targetSum`的路径数量。
+
+所谓路径，必须从上到下，而不能横跨一个节点的两棵子树。如下所示：
+![path-sum](./path-sum.png)
+
+```
+输入：root = [10,5,-3,3,2,null,11,3,-2,null,1], targetSum = 8
+输出：3
+解释：和等于 8 的路径有 3 条，如图所示。
+```
+
+这是一个求前缀和的问题。一旦涉及前缀和，第一时间想到的就是先序遍历，因为先序遍历需要先访问上层节点。
+
+我们一边先序遍历，一边记录从根节点到当前节点的路径和，这是十分容易做到的。但是我们注意到，题目要求的路径可以不必从根节点开始。那么，一条路径和可以通过**两条由根节点发出的路径和之差**计算得到。
+
+假设有这条路径：
+```
+p1 -> p2 -> p3 -> p4
+```
+要求解路径和:
+```
+p3 -> p4
+```
+可以借助p1到p4的路径和减去p1到p2的路径和。那么这涉及保存先前路径和的问题，所以需要引入一个Map。
+
+```java
+class Solution {
+    public int pathSum(TreeNode root, int targetSum) {
+        Map<Long, Integer> map = new HashMap<>();
+        // 从根节点出发的路径也是合理的，因此需要加入0
+        map.put(0L, 1);
+        return preOrder(root, 0L, targetSum, map);
+    }
+    private int preOrder(TreeNode root, long curSum, int targetSum, 
+                    Map<Long, Integer> map) {
+        if (root == null) {
+            return 0;
+        }
+        curSum += root.val;
+        // 从根节点出发的两条路径和之差
+        int ans = map.getOrDefault(curSum - targetSum, 0);
+        // 将根节点到当前节点的路径和加入map
+        map.put(curSum, map.getOrDefault(curSum, 0) + 1);
+        // 先序遍历的两个递归
+        ans += preOrder(root.left, curSum, targetSum, map);
+        ans += preOrder(root.right, curSum, targetSum, map);
+        // 移出map，因为当前不再属于任何节点的上层节点
+        map.put(curSum, map.get(curSum) - 1);
+
+        return ans;
+    }
+}
+```
+
+
+
 #### 4. 用遍历序列还原二叉树
 
 这道题来自于[LeetCode105从前序与中序遍历序列构造二叉树](https://leetcode-cn.com/problems/construct-binary-tree-from-preorder-and-inorder-traversal/)。给定前序遍历得到的数组与中序遍历得到的数组，用这两个数组还原出原来的二叉树。
