@@ -10,7 +10,7 @@ categories:
     - midware
 ---
 
-Redis即Remote Dictory Server，远程字典服务。
+Redis即Remote Dictory Server，远程字典服务。本文参考了《Redis开发与运维》。
 
 <!--more-->
 
@@ -747,15 +747,18 @@ redis-check-aof --fix appendonly.aof
 同步频率设置。
 
 ```apache
-# 每次写操作都会立即同步
+# 每次写操作都会立即同步,fsync sys call在每次执行命令后立刻执行
 # appendfsync always
-# 每秒同步
+
+# 执行命令后，先执行write sys call，将命令写入linux内核的系统缓冲区。每秒同步写入硬盘，即每秒执行fsync
+# 最推荐
 appendfsync everysec 
+
 # 把同步时机交给操作系统
 # appendfsync no
 ```
 
-重写压缩操作：将多条命令压缩成一条命令，只关注结果，不关注过程。当AOF文件大小超过基础大小的100%（默认）时，会触发重写压缩操作。例如基础大小为64MB，那么当AOF文件大小达到128MB时，会重写压缩。
+重写机制：将多条命令压缩成一条命令，只关注结果，不关注过程。当AOF文件大小超过基础大小的100%（默认）时，会触发重写压缩操作。例如基础大小为64MB，那么当AOF文件大小达到128MB时，会重写压缩。
 
 ```bash
 set k1 v1
@@ -767,6 +770,8 @@ set k1 v1 k2 v2
 优点：备份机制更加稳健，丢失数据概率更低。可读的日志文本，通过操作AOF文件，可以处理误操作。
 
 缺点：比RDB占用更多的磁盘空间。恢复备份速度慢。每次读写都同步的话，有一定的性能压力。
+
+Redis持久化中最耗时的操作是fork。在RDB中，需要fork子进程来持久化数据，而在AOF中需要fork子进程来操作重写AOF文件。而Linux有copy-on-write技术，在fork的子进程进行持久化操作时，直接从父进程的内存快照中读取，当父进程需要写入时，会复制一页内存页副本完成写操作。待子进程完毕后，在将副本写入原始的内存页。详见《Redis开发与运维》P162
 
 ## 11. 主从复制
 
