@@ -213,9 +213,9 @@ SpringBoot已经自动配置了一些资源，例如数据库连接池、数据�
 ```yml
 spring:
   datasource:
-    url: jdbc:mysql://seekwind.xyz:3306/db_name
+    url: jdbc:mysql://192.168.203.150:3306/crm_db?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai&useSSL=false
     username: root
-    password: fjgkf&@cv+Gfdxw_^%Bn
+    password: hdvbtnr$f2#@fj2
     driver-class-name: com.mysql.jdbc.Driver
 ```
 
@@ -224,7 +224,7 @@ spring:
 * MyBatis的配置：
     * 1. 导入starter
     ```xml
-            <dependency>
+        <dependency>
             <groupId>org.mybatis.spring.boot</groupId>
             <artifactId>mybatis-spring-boot-starter</artifactId>
             <version>2.2.0</version>
@@ -241,6 +241,7 @@ spring:
 
     * 3. 书写Mapper接口
     ```java
+    @Mapper
     public interface UserMapper {
         User getUserById(String id);
     }

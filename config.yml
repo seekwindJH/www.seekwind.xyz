@@ -209,3 +209,8 @@ params:
     - category
     - tag
     - recent_posts
+
+markup:
+  goldmark:
+    renderer:
+      unsafe: true
