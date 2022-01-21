@@ -234,9 +234,9 @@ spring:
     * 2. 在yml中配置：
     ```yml
     mybatis:
-    mapper-locations: classpath:mapper/*.xml
-    configuration:
-        map-underscore-to-camel-case: true
+        mapper-locations: classpath:mapper/*.xml
+        configuration:
+            map-underscore-to-camel-case: true
     ```
 
     * 3. 书写Mapper接口
